@@ -1,4 +1,4 @@
-export interface ThemeState {
-    isDark: boolean,
-    mode: string
+export interface Theme {
+    darkMode: boolean,
+    text: string
 }
