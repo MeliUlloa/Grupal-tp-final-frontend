@@ -2,7 +2,7 @@ export interface TaskApiResponse{
     statusCode?: number
     message?: string | [string];
     error?: string;
-    id?: string;
+    id?: number;
     createdAt?: string;
     updatedAt?: string;
     title?: string;
