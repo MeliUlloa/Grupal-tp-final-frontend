@@ -1,18 +1,33 @@
-<script>
+<script >
 export default {
     data() {
         return {
             email: "",
             password: "",
+            isLogin: true, // Controla si estamos en el formulario de login (true) o registro (false)
+            name: "", // Usado solo en el formulario de registro
+            confirmPassword: "", // Usado solo en el formulario de registro
         };
     },
     methods: {
-        handleSubmit() {
+       // Maneja el submit del formulario
+       handleSubmit() {
             console.log("Correo:", this.email);
             console.log("Contraseña:", this.password);
-            
-            alert("Inicio de sesión enviado");
+
+            // Si estamos en login, simplemente muestra un alert
+            if (this.isLogin) {
+                alert("Inicio de sesión enviado");
+            } else {
+                // Si estamos en registro, muestra un alert para registro
+                alert("Registro enviado");
+            }
         },
+    
+    // Método para alternar entre login y registro
+    toggleForm() {
+            this.isLogin = !this.isLogin; // Cambia el estado entre login y registro
+        }
     },
 };
 </script>
@@ -50,7 +65,7 @@ export default {
           />
         </div>
 
-        <!-- Campo de Contraseña -->
+        <!-- Campo de Contraseña (solo en Registro) -->
         <div class="mb-4">
           <label for="password" class="block text-gray-600 font-medium mb-1">Contraseña</label>
           <input
