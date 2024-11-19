@@ -2,14 +2,18 @@
 import { reactive } from 'vue'
 import { MoonIcon, SunIcon, LinkIcon } from '@heroicons/vue/24/solid'
 import { useThemeStore } from '@/stores/ThemeStore'
+import { useAuthStore } from '@/stores/AuthStore'
 
 const useStore = useThemeStore() 
 const theme =  reactive(useStore)
 
+const AuthStore = useAuthStore()
+const sesion = reactive(AuthStore)
+
 </script>
 
 <template>
-  <div v-bind:class="theme.isDark ? 'dark' : ''" class="wrapper transition ease-linear">
+  <div v-bind:class="theme.darkMode ? 'dark' : ''" class="wrapper transition ease-linear">
     <div class="btn-wrapper">
       <div class="toggle-btn flex items-center justify-center w-full my-4">
         <label for="toggle" class="flex items-center justify-center cursor-pointer">
@@ -19,26 +23,26 @@ const theme =  reactive(useStore)
             <div
               class="dot absolute left-1 top-1 bg-black w-6 h-6 flex items-center justify-center rounded-full transition">
               <!-- usar directiva v-if  para mostrar el icono de luna o sol -->
-              <MoonIcon v-if="!theme.isDark" class="w-4 h-4 text-white" />
-              <SunIcon v-if="theme.isDark" class="w-full h-full text-yellow-500 p-1" />
+              <MoonIcon v-if="!theme.darkMode" class="w-4 h-4 text-white" />
+              <SunIcon v-if="theme.darkMode" class="w-full h-full text-yellow-500 p-1" />
             </div>
           </div>
 
           <!-- cambiar el texto segun sea Light o Dark mode -->
-          <div v-bind:class="theme.isDark ? 'dark' : ''" class="label-text ml-2 font-medium">
-            {{ theme.mode }}
+          <div v-bind:class="theme.darkMode ? 'dark' : ''" class="label-text ml-2 font-medium">
+            {{ theme.text }}
           </div>
         </label>
       </div>
     </div>
-    <div v-bind:class="theme.isDark ? 'dark' : ''" class="img min-h-screen flex flex-col items-center transition"></div>
+    <div v-bind:class="theme.darkMode ? 'dark' : ''" class="img min-h-screen flex flex-col items-center transition"></div>
     <div class="todo flex-1 lg:w-2/3 xl:w-2/5 w-full px-7">
       <RouterView />
     </div>
   </div>
   <div class="absolute bottom-0 w-full h-20 flex flex-col justify-center items-center bg-slate-500 text-xl font-semibold">
     <div class="unknowncode"><span class="font-light mx-2">by</span>unknown<span class="text-gray-200 font-normal">code</span>44</div>
-    <p class="text-sm font-normal">Matias Orellana 2024</p>
+    <p class="text-sm font-normal"></p>
     <a class="text-sm font-normal text-white cursor-pointer flex flex-row justify-around items-center" href="https://github.com/unknowncode44"><LinkIcon class="h-3 w-3 mx-2"/> GitHub</a>
   </div>
 </template>
