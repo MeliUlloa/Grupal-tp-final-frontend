@@ -2,7 +2,7 @@
 import { reactive } from 'vue'
 import { useThemeStore } from '@/stores/ThemeStore'
 
-import type { Credentials } from '@/models/AuthModel.ts'
+import type { Credentials } from '@/models/AuthModels.ts'
 
 
 const useTheme = useThemeStore() 
