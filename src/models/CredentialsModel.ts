@@ -3,6 +3,6 @@
  */
 export interface CredentialsModel {
     correo: string;
-    constrasenia: string;
+    contrasenia: string;
     nickname?: string;
 }

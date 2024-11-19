@@ -2,7 +2,7 @@ import type { CredentialsModel } from './CredentialsModel';
 
 export interface SesionModel {
     user?: CredentialsModel; // tipo -> { correo, contrasenia, user}
-    crsfToken?: string;
+    csrfToken?: string;
     jwtExpires?: number; // exp del token
 }
 

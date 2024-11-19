@@ -1,71 +1,103 @@
-<script setup lang="ts">
-import {reactive} from 'vue'
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue'
-import { useThemeStore } from '@/stores/ThemeStore';
-
-import RegisterComponent  from '@/components/auth/RegisterComponent.vue'
-import LoginComponent  from '@/components/auth/LoginComponent.vue'
-
-
-const buttons = [
-    {text: 'Ingreso', selected: true},
-    {text: 'Registro', selected: false},
-]
-
-const btns = reactive(buttons)
-const themeStore = useThemeStore()
-const theme = reactive(themeStore)
-
-function select() {
-    if(btns[0].selected) {
-        btns[0].selected = !btns[0].selected
-    }
-    else {
-        btns[0].selected = !btns[0].selected
-    }
-
-    if(btns[1].selected) {
-        btns[1].selected = !btns[1].selected
-    }
-    else {
-        btns[1].selected = !btns[1].selected
-    }
-}
-
+<script>
+export default {
+    data() {
+        return {
+            email: "",
+            password: "",
+        };
+    },
+    methods: {
+        handleSubmit() {
+            console.log("Correo:", this.email);
+            console.log("Contraseña:", this.password);
+            
+            alert("Inicio de sesión enviado");
+        },
+    },
+};
 </script>
 
 <template>
-   <div class="w-full px-2 py-16 sm:px-0">
-    <TabGroup>
-        <!-- Tabs -->
-        <TabList
-            :class="theme.isDark ? 'bg-white/[0.12]' : 'bg-blue-900/20'"
-            class="flex justify-around py-1 rounded ">
-                <!-- iterable tabs -->
-                <Tab
-                    @click="select()"
-                    v-for="tab in buttons"
-                    :key="tab.text" 
-                    :class="[tab.selected ? 'w-full bg-gray-200 rounded transition ease-linear' : 'rounded text-blue-100 hover:bg-white/[0.12] hover:text-white', tab.selected&&theme.isDark ? 'bg-gray-700 text-blue-100' : 'text-blue-500']" 
-                    class="w-full focus:outline-none mx-1">
-                        <button class="px-10 py-5 mx-1 font-medium">{{ tab.text }}</button>
-                </Tab>
-        </TabList>
+    <div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">
+        {{ isLogin ? "Iniciar Sesión" : "Registro" }}
+      </h2>
+      <form @submit.prevent="handleSubmit">
+        <!-- Campo de Nombre (solo en Registro) -->
+        <div v-if="!isLogin" class="mb-4">
+          <label for="name" class="block text-gray-600 font-medium mb-1">Nombre</label>
+          <input
+            type="text"
+            id="name"
+            v-model="name"
+            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            placeholder="Ingresa tu nombre"
+            required
+          />
+        </div>
 
-        <!-- Panels -->
-        <TabPanels :class="theme.isDark ? 'border bg-gray-700 border-gray-700 text-blue-100' : 'text-blue-500'" class="w-full p-4 bg-gray-200 flex mt-2 rounded shadow md:mt-2 xl:p-0">
-            <TabPanel class="w-full">
-                <LoginComponent/>
-            </TabPanel>
-            <TabPanel class="w-full">
-                <RegisterComponent/>
-            </TabPanel>
-        </TabPanels>
-    </TabGroup>
-   </div>
+        <!-- Campo de Correo Electrónico -->
+        <div class="mb-4">
+          <label for="email" class="block text-gray-600 font-medium mb-1">Correo Electrónico</label>
+          <input
+            type="email"
+            id="email"
+            v-model="email"
+            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            placeholder="Ingresa tu correo"
+            required
+          />
+        </div>
+
+        <!-- Campo de Contraseña -->
+        <div class="mb-4">
+          <label for="password" class="block text-gray-600 font-medium mb-1">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            v-model="password"
+            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            placeholder="Ingresa tu contraseña"
+            required
+          />
+        </div>
+
+        <!-- Campo de Confirmar Contraseña (solo en Registro) -->
+        <div v-if="!isLogin" class="mb-6">
+          <label for="confirmPassword" class="block text-gray-600 font-medium mb-1">Confirmar Contraseña</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            v-model="confirmPassword"
+            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            placeholder="Confirma tu contraseña"
+            required
+          />
+        </div>
+
+        <!-- Botón de Enviar -->
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          {{ isLogin ? "Iniciar Sesión" : "Registrarse" }}
+        </button>
+      </form>
+
+      <!-- Alternar entre Login y Registro -->
+      <p class="text-center text-sm text-gray-500 mt-4">
+        {{ isLogin ? "¿No tienes cuenta?" : "¿Ya tienes una cuenta?" }}
+        <button
+          @click="toggleForm"
+          class="text-blue-500 hover:underline ml-1"
+        >
+          {{ isLogin ? "Regístrate aquí" : "Inicia sesión aquí" }}
+        </button>
+      </p>
+    </div>
+  </div>
 </template>
 
 
-<style scoped>
-
-</style>
+<style scoped></style>
