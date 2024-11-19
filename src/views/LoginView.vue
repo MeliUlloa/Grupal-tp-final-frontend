@@ -25,15 +25,16 @@ export default {
         },
     
     // Método para alternar entre login y registro
-    toggleForm() {
+        toggleForm() {
             this.isLogin = !this.isLogin; // Cambia el estado entre login y registro
         }
     },
+    
 };
 </script>
 
 <template>
-    <div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="min-h-screen flex items-center justify-center ">
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
       <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">
         {{ isLogin ? "Iniciar Sesión" : "Registro" }}
@@ -65,7 +66,7 @@ export default {
           />
         </div>
 
-        <!-- Campo de Contraseña (solo en Registro) -->
+        <!-- Campo de Contraseña -->
         <div class="mb-4">
           <label for="password" class="block text-gray-600 font-medium mb-1">Contraseña</label>
           <input

@@ -18,7 +18,7 @@ const sesion = reactive(AuthStore)
       <div class="toggle-btn flex items-center justify-center w-full my-4">
         <label for="toggle" class="flex items-center justify-center cursor-pointer">
           <div class="relative">
-            <input type="checkbox" id="toggle" class="sr-only" @click="theme.toggleTheme"/>
+            <input type="checkbox" id="toggle" class="sr-only" @click="theme.changeTheme"/>
             <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
             <div
               class="dot absolute left-1 top-1 bg-black w-6 h-6 flex items-center justify-center rounded-full transition">
