@@ -50,12 +50,12 @@ function toggleForm() {
         :password="formState.password"
         :name="formState.name"
         :confirm-password="formState.confirmPassword"
-        @submit="handleSubmit"
+        @click="handleSubmit()"
       />
       
       <!-- Botón para alternar entre Login y Registro -->
       <button 
-        @click="toggleForm" 
+        @click="toggleForm()" 
         :class="theme.darkMode ? 'text-white-100' : 'text-blue-500'"
         class="w-full mt-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
         

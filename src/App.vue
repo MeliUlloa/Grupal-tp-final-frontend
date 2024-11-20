@@ -43,11 +43,19 @@ const sesion = reactive(AuthStore)
       <RouterView />
     </div>
   </div>
-  <div class="absolute bottom-0 w-full h-20 flex flex-col justify-center items-center bg-slate-500 text-xl font-semibold">
-    <div class="unknowncode"><span class="font-light mx-2">by</span>unknown<span class="text-gray-200 font-normal">code</span>44</div>
-    <p class="text-sm font-normal"></p>
-    <a class="text-sm font-normal text-white cursor-pointer flex flex-row justify-around items-center" href="https://github.com/unknowncode44"><LinkIcon class="h-3 w-3 mx-2"/> GitHub</a>
+  <div class="w-full py-10 bg-gray-600 text-white">
+  <div class="max-w-screen-xl mx-auto text-center">
+    <p class="text-lg font-semibold mb-2">Hecho con lagrimas, sudor, sangre y muchas preguntas B ☠️</p>
+    <div class="flex justify-center items-center mb-4">
+      <span class="text-2xl font-bold">Aedo Maia, Ulloa Melina</span>
+    </div>
+    <p class="text-sm mb-4">Bringing you quality code with peace of mind.</p>
+    <a href="https://github.com/MeliUlloa/Grupal-tp-final-frontend" class="text-sm text-gray-300 hover:text-white transition-colors">
+      <LinkIcon class="h-5 w-5 inline-block mr-2"/> GitHub
+    </a>
+    <p class="text-xs mt-4 text-gray-300">© 2024 chicas super poderosas. All rights reserved.</p>
   </div>
+</div>
 </template>
 
 <style scoped>
