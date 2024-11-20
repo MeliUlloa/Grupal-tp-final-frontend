@@ -1,7 +1,5 @@
 // Instancia de axios
 import { apiInstance } from "../api";
-// Respuesta generica del server (con tipo genérico T para modelos de respuesta)
-import type { APIResponse } from "@/models/ApiResponseModel";
 // Modelo de solicitud
 import type { CreateTask } from "@/models/TaskRequestModel";
 // Modelo de respuesta 

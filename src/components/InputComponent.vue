@@ -1,103 +1,94 @@
 <script setup lang="ts">
-// importar reactive
-// importar themeStore
-// importar taskStore
-// importar modelo de tarea
-import { reactive } from 'vue'
+import { reactive } from 'vue';
 import { useThemeStore } from '@/stores/ThemeStore';
-import { useTaskStore} from '@/stores/TaskStore'
-import type { Task } from '@/models/TaskModel'
+import { useTaskStore } from '@/stores/TaskStore';
+import type { Task } from '@/models/TaskModel';
+// Iconos
+import { XMarkIcon, PlusCircleIcon } from '@heroicons/vue/24/outline';
+import { CheckCircleIcon as SolidCircleIcon } from '@heroicons/vue/24/solid';
 
-// iconos
-import { XMarkIcon, PlusCircleIcon } from '@heroicons/vue/24/outline'  
-import { CheckCircleIcon as SolidCircleIcon } from '@heroicons/vue/24/solid'
+const themeStore = useThemeStore();
+const theme = reactive(themeStore);
 
-// definir variable para almacenar useThemeStore
-// definir variable reactiva pasando objeto themeStore
-const themeStore = useThemeStore()
-const theme = reactive(themeStore)
+const taskStore = useTaskStore();
+const tasks = reactive(taskStore);
 
-// definir variable para almacenar useTaskStore
-// definir variable reactiva pasando objeto tasksStore
-const taskStore = useTaskStore()
-const tasks = reactive(taskStore)
-
-
+// Nueva tarea reactiva
 const newTask: Task = {
-  id:  0,
-  tarea:  '',
-  completada: false
-}
+  id: 0,
+  tarea: '',
+  completada: false,
+};
+const reactiveTask = reactive(newTask);
 
-const reactiveTask = reactive(newTask)
-
-function makeItComplete(){
-  reactiveTask.completada = !reactiveTask.completada
+// Funciones
+function toggleAction() {
+  reactiveTask.completada = !reactiveTask.completada;
 }
 
 function saveTask() {
-  tasks.addTask(reactiveTask)
+  tasks.addTask(reactiveTask);
 }
-
 </script>
 
 <template>
-  <div class="wrapper relative group border-black">
-    <div class="absolute top-3 sm:top-4 left-5">
+  <div :class="theme.darkMode ? 'dark' : ''" class="task-card bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6 flex items-center justify-between mb-4">
+    
+    <div class="flex items-center space-x-3">
       <div class="relative">
-        <input
-          type="ckeckbox"
-          @click="makeItComplete"
-          class="form-checkbox border rounded-full focus:ouline-none h-6 w-6 cursor-pointer transition ease-linear"
-        />
-        <!-- SI ES TAREA COMPLETA CON V-IF -->
-        <SolidCircleIcon @click="makeItComplete" v-if="reactiveTask.completada" class="h-100 w-100 absolute left-0 top-0 text-green-500"/>
+        <input type="checkbox" @click="toggleAction" class="checkbox h-6 w-6 border-2 rounded focus:outline-none cursor-pointer"/>
+        <SolidCircleIcon v-if="reactiveTask.completada" @click="toggleAction" class="absolute inset-0 w-6 h-6 text-green-500 pointer-events-none"/>
       </div>
+
+      <input v-model="newTask.tarea" type="text" placeholder="Nueva tarea" :class="theme.darkMode ? 'dark-input' : 'light-input'"
+        class="text-lg w-full bg-transparent border-b border-gray-300 dark:border-gray-600 focus:outline-none focus:border-blue-500 transition duration-200"/>
     </div>
 
-    <!-- input -->
-    <form @submit.prevent>
-
-      <!-- input: usar v-bind para definir si es modo oscuro -->
-      <input
-        v-bind:class="theme.darkMode ? 'dark' : ''"
-        v-model="newTask.tarea"
-        type="text"
-        placeholder="Escribe una nueva tarea"
-        class="sm:text-base overflow-ellipsis w-full focus:outline-none py-4 sm:py-4.5 pr-8 pl-14 sm:pl-16 cursor-pointer transition ease-linear"
-      />
-
-      <!-- div: usar v-bind para definir si es modo oscuro -->
-      <div v-bind:class="theme.darkMode ? 'dark' : ''" class="btns absolute right-0 top-0 py-2 sm:py-2.5 px-2 w-20 h-14 flex justify-around cursor-default transition ease-linear" >
-        <button  class="p-1 cursor-pointer">
-          <PlusCircleIcon @click="saveTask" class="w-6 h-6 hover:text-green-600"/>
-        </button>
-        <button >
-          <XMarkIcon class="w-6 h-6 hover:text-red-500 "/>
-        </button> 
-      </div>
-    </form>
+    <div class="flex items-center space-x-4">
+      <button @click="saveTask" class="text-green-500 hover:text-green-700 transition duration-200">
+        <PlusCircleIcon class="w-6 h-6" />
+      </button>
+      <button class="text-red-500 hover:text-red-700 transition duration-200">
+        <XMarkIcon class="w-6 h-6" />
+      </button>
+    </div>
   </div>
 </template>
 
 <style scoped>
-  input[type="text"] {
-    border-radius: 5px;
-  }
-  .btns {
-    background: rgb(190, 190, 190);
-    border-radius: 0 5px 5px 0;
-  }
+.task-card {
+  background-color: #f9fafb;
+  transition: background-color 0.3s ease-in-out;
+}
 
-  .btns  button:nth-child(1) {
-    border-right: 1px solid #434343;
-  }
+.task-card.dark {
+  background-color: #1f2937;
+}
 
-  input.dark {
-    background: #434343;
-  }
+input[type="text"] {
+  font-size: 1rem;
+  color: #374151;
+}
 
-  .btns.dark {
-    background: rgb(101, 101, 101);
-  }
+.dark-input {
+  color: #d1d5db;
+}
+
+input::placeholder {
+  color: #9ca3af;
+}
+
+input.dark::placeholder {
+  color: #6b7280;
+}
+
+.checkbox {
+  border-color: #d1d5db;
+}
+
+.checkbox:checked {
+  background-color: #10b981;
+  border-color: #10b981;
+}
+
 </style>

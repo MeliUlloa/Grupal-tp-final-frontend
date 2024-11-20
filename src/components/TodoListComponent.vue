@@ -1,107 +1,95 @@
 <script setup lang="ts">
-// importar reactive
-// importar themeStore
-// importart taskStore
-import { reactive } from 'vue'
+import { reactive } from 'vue';
 import { useThemeStore } from '@/stores/ThemeStore';
-import { useTaskStore } from '@/stores/TaskStore'
+import { useTaskStore } from '@/stores/TaskStore';
+// Iconos
+import { TrashIcon } from '@heroicons/vue/24/outline';
+import { CheckCircleIcon as CompletedIcon } from '@heroicons/vue/24/solid';
+import SpinnerComponent from '@/components/SpinnerComponent.vue';
 
-// importamos el modelo Task
-import type {Task} from '@/models/TaskModel'
+const themeStore = useThemeStore();
+const theme = reactive(themeStore);
 
-// iconos
-import { TrashIcon } from '@heroicons/vue/24/outline'
-import { CheckCircleIcon as CompletedIcon } from '@heroicons/vue/24/solid'
-
-
-// definir variable para almacenar useThemeStore
-// definir variable reactiva pasando objeto themeStore
-const themeStore = useThemeStore()
-const theme = reactive(themeStore)
-
-// definir variable para almacenar useTaskStore
-// definir variable reactiva pasando objeto taskStore
-const taskStore = useTaskStore()
-const tasks = reactive(taskStore)
-
-
+const taskStore = useTaskStore();
+const tasks = reactive(taskStore);
+tasks.getAllTasks();
 </script>
 
 <template>
-    <!-- div: usar v-bind:class para cambiar a modo oscuro -->
-    <div v-bind:class="theme.darkMode ? 'dark' : ''" class="list-wrapper max-w rounded overflow-y-auto shadow-lg mt-10 p-4 transition ease-linear">
-        
-        <div class="px-6 py-4">
-            <div class="font-bold text-xl mb-2">
-                Mis Tareas
-            </div>
+  <div :class="theme.darkMode ? 'dark' : ''" class="task-list bg-gray-200 rounded-lg p-6 shadow-lg transition-colors duration-300">
+    <header class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Tareas</h1>
+      <SpinnerComponent v-show="tasks.loading" />
+    </header>
+    <div v-for="task in tasks.data" :key="task.id" class="task-item bg-white dark:bg-gray-700 rounded-lg shadow p-4 mb-4 flex justify-between items-center">
+      <div class="flex items-center">
+        <div class="relative mr-4">
+          <input type="checkbox" @click="tasks.changeStatus(task)" class="w-6 h-6 border rounded focus:outline-none cursor-pointer" />
+          <CompletedIcon v-if="task.completada" class="absolute inset-0 w-6 h-6 text-green-500 pointer-events-none"
+          />
         </div>
-
-        <!-- envoltura de la tarea, insertar v-for aca! -->
-        <div v-for="task in tasks.data" :key="task.id" class="wrapper relative group border-black my-2 transition ease-linear">
-            <form v-on:submit.prevent>
-                    <div class="absolute top-3 sm:top-4 left-5">
-
-                    <!-- aca aplicar directiva @click para  cambiar estado de tarea -->
-                    <div @click="tasks.changeStatus(task)" class="relative">
-                        <input
-                        type="ckeckbox"
-                        class="form-checkbox border rounded-full focus:ouline-none h-6 w-6 cursor-pointer transition ease-linear"
-                        />
-                        <!-- usar directiva v-if para mostrar si la tarjeta esta completada -->
-                        <CompletedIcon v-if="task.completada" class="h-100 w-100 absolute left-0 top-0 text-green-600"/>
-                    </div>
-                </div>
-
-                <!-- usar v-model para pasar el texto de la tarea en input -->
-                <input
-                    disabled
-                    v-model="task.tarea"
-                    v-bind:class="theme.darkMode ? 'dark' : ''"
-                    type="text"
-                    class="tarea sm:text-base overflow-ellipsis w-full disabled:bg-white focus:outline-none py-4 sm:py-4.5 pr-8 pl-14 sm:pl-16 cursor-pointer transition ease-linear"
-                    />
-                <div class="btns absolute right-0 top-0 py-2 sm:py-2.5 px-2 w-20 h-14 flex justify-around cursor-default" >
-
-                    <!-- usar @click y llamar a funcion para borrar tarea -->
-                    <button @click="tasks.removeTask(task)" class="p-1 cursor-pointer"><TrashIcon class="w-6 h-6 hover:text-red-500 "/></button> 
-                </div>
-
-                <!-- indicador de tarea terminada, usar v-if segun corresponda -->
-                <span v-if="task.completada" class="badge absolute right-10 inline-block bg-green-200 text-teal-800 text-xs px-2 rounded-full uppercase font-semibold tracking-wide">Completo</span>
-                <span v-if="!task.completada" class="badge absolute right-10 inline-block bg-red-200 text-red-800 text-xs px-2 rounded-full uppercase font-semibold tracking-wide">Pendiente</span>
-            </form>
-
-        </div>
-
-        <!-- aca acciones de filtrado, usar @click segun corresponda -->
-        <div class="px-6 py-2 mt-5">
-            <span @click="tasks.showAll" class="inline-block bg-gray-300 rounded px-3 py-1 text-sm font-semibold mr-2 mb-2 hover:bg-gray-500 cursor-pointer shadow-lg">Todas</span>
-            <span @click="tasks.showCompleted" class="inline-block bg-gray-300 rounded px-3 py-1 text-sm font-semibold mr-2 mb-2 hover:bg-gray-500 cursor-pointer shadow-lg">Completas</span>
-            <span @click="tasks.showPending" class="inline-block bg-gray-300 rounded px-3 py-1 text-sm font-semibold mr-2 mb-2 hover:bg-gray-500 cursor-pointer shadow-lg">Pendientes</span>
-            
-        </div>
-
+        <input type="text" v-model="task.tarea" disabled class="bg-transparent text-lg dark:text-gray-200 border-none focus:outline-none cursor-default w-full"/>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span :class="task.completada ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'" class="badge px-3 py-1 rounded-full text-sm font-medium">
+          {{ task.completada ? 'Completa' : 'Pendiente' }}
+        </span>
+        <button @click="tasks.removeTask(task)" class="text-red-500 hover:text-red-700">
+          <TrashIcon class="w-6 h-6" />
+        </button>
+      </div>
     </div>
+    <footer class="flex justify-center space-x-4 mt-6">
+      <button @click="tasks.showAll" class="btn-filter">
+        Todas
+      </button>
+      <button @click="tasks.showCompleted" class="btn-filter">
+        Completas
+      </button>
+      <button @click="tasks.showPending" class="btn-filter">
+        Pendientes
+      </button>
+    </footer>
+  </div>
 </template>
 
-
 <style scoped>
-    .list-wrapper {
-        background: rgb(190, 190, 190);
-    }
-    .list-wrapper.dark {
-        background: rgb(101, 101, 101);
-    }
-    input.tarea {
-        border-radius: 5px;
-    }
+.task-list {
+  background-color: #f9fafb;
+}
 
-    input.tarea.dark {
-        background: #434343;
-    }
+.task-list.dark {
+  background-color: #1f2937;
+}
 
-    .badge {
-        top: -8px
-    }
+.task-item {
+  border-left: 4px solid transparent;
+}
+
+.task-item:hover {
+  border-left-color: #3b82f6;
+}
+
+.task-item.dark {
+  background-color: #374151;
+}
+
+.badge {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-filter {
+  background-color: #e5e7eb;
+  color: #374151;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-filter:hover {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
 </style>
