@@ -51,7 +51,7 @@ function saveTask() {
           class="form-checkbox border rounded-full focus:ouline-none h-6 w-6 cursor-pointer transition ease-linear"
         />
         <!-- SI ES TAREA COMPLETA CON V-IF -->
-        <SolidCircleIcon @click="makeItComplete" v-if="reactiveTask.completada"class="h-100 w-100 absolute left-0 top-0 text-green-500"/>
+        <SolidCircleIcon @click="makeItComplete" v-if="reactiveTask.completada" class="h-100 w-100 absolute left-0 top-0 text-green-500"/>
       </div>
     </div>
 
@@ -60,7 +60,7 @@ function saveTask() {
 
       <!-- input: usar v-bind para definir si es modo oscuro -->
       <input
-        v-bind:class="theme.isDark ? 'dark' : ''"
+        v-bind:class="theme.darkMode ? 'dark' : ''"
         v-model="newTask.tarea"
         type="text"
         placeholder="Escribe una nueva tarea"
@@ -68,10 +68,10 @@ function saveTask() {
       />
 
       <!-- div: usar v-bind para definir si es modo oscuro -->
-      <div v-bind:class="theme.isDark ? 'dark' : ''" class="btns absolute right-0 top-0 py-2 sm:py-2.5 px-2 w-20 h-14 flex justify-around cursor-default transition ease-linear" >
+      <div v-bind:class="theme.darkMode ? 'dark' : ''" class="btns absolute right-0 top-0 py-2 sm:py-2.5 px-2 w-20 h-14 flex justify-around cursor-default transition ease-linear" >
         <button  class="p-1 cursor-pointer">
           <PlusCircleIcon @click="saveTask" class="w-6 h-6 hover:text-green-600"/>
-        </button class="p-1 cursor-pointer">
+        </button>
         <button >
           <XMarkIcon class="w-6 h-6 hover:text-red-500 "/>
         </button> 

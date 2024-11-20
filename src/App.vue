@@ -14,8 +14,11 @@ const sesion = reactive(AuthStore)
 
 <template>
   <div v-bind:class="theme.darkMode ? 'dark' : ''" class="wrapper transition ease-linear">
+
     <div class="btn-wrapper">
+
       <div class="toggle-btn flex items-center justify-center w-full my-4">
+        
         <label for="toggle" class="flex items-center justify-center cursor-pointer">
           <div class="relative">
             <input type="checkbox" id="toggle" class="sr-only" @click="theme.changeTheme"/>

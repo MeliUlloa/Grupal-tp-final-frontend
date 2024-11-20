@@ -29,7 +29,7 @@ const tasks = reactive(taskStore)
 
 <template>
     <!-- div: usar v-bind:class para cambiar a modo oscuro -->
-    <div v-bind:class="theme.isDark ? 'dark' : ''" class="list-wrapper max-w rounded overflow-y-auto shadow-lg mt-10 p-4 transition ease-linear">
+    <div v-bind:class="theme.darkMode ? 'dark' : ''" class="list-wrapper max-w rounded overflow-y-auto shadow-lg mt-10 p-4 transition ease-linear">
         
         <div class="px-6 py-4">
             <div class="font-bold text-xl mb-2">
@@ -57,7 +57,7 @@ const tasks = reactive(taskStore)
                 <input
                     disabled
                     v-model="task.tarea"
-                    v-bind:class="theme.isDark ? 'dark' : ''"
+                    v-bind:class="theme.darkMode ? 'dark' : ''"
                     type="text"
                     class="tarea sm:text-base overflow-ellipsis w-full disabled:bg-white focus:outline-none py-4 sm:py-4.5 pr-8 pl-14 sm:pl-16 cursor-pointer transition ease-linear"
                     />
